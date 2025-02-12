@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Krash our Quads - VTX Frequency</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="images/krash_our_quads.gif" />
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/menu.css">
+
+  <!-- update the version number as needed -->
+  <script defer src="/__/firebase/11.2.0/firebase-app-compat.js"></script>
+  <!-- include only the Firebase features as you need -->
+  <script defer src="/__/firebase/11.2.0/firebase-auth-compat.js"></script>
+  <script defer src="/__/firebase/11.2.0/firebase-database-compat.js"></script>
+  <script defer src="/__/firebase/11.2.0/firebase-firestore-compat.js"></script>
+  <!--
+  <script defer src="/__/firebase/11.2.0/firebase-functions-compat.js"></script>
+  <script defer src="/__/firebase/11.2.0/firebase-messaging-compat.js"></script>
+  <script defer src="/__/firebase/11.2.0/firebase-storage-compat.js"></script>
+  <script defer src="/__/firebase/11.2.0/firebase-analytics-compat.js"></script>
+  <script defer src="/__/firebase/11.2.0/firebase-remote-config-compat.js"></script>
+  <script defer src="/__/firebase/11.2.0/firebase-performance-compat.js"></script>
+  -->
+  <!-- 
+      initialize the SDK after all desired features are loaded, set useEmulator to false
+      to avoid connecting the SDK to running emulators.
+    -->
+  <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+
+</head>
+
+<body>
+  <div class="menu-wrap">
+    <input type="checkbox" class="toggler js-toggler">
+    <div class="hamburger">
+      <div></div>
+    </div>
+    <div class="menu">
+      <div>
+        <div>
+          <ul>
+            <li class="js-menu-home"><a>Home</a></li>
+            <li class="js-menu-login"><a>Log In</a></li>
+            <li class="js-menu-logout"><a>Log Out</a></li>
+            <li class="js-menu-enter-channel"><a>Enter VTX Channel</a></li>
+            <li class="js-menu-change-channel"><a>Change VTX Channel</a></li>
+            <li class="js-menu-remove-channel"><a>Remove VTX Channel</a></li>
+            <li class="js-menu-show-channels"><a>Show Allocated Channels</a></li>
+            <li class="js-menu-meeting-id"><a>Change Meeting ID</a></li>
+            <li class="js-menu-clean"><a>Clean</a></li>
+            <li class="js-menu-about"><a>About</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <header class="showcase">
+    <div class="container showcase-inner js-container">
+    </div>
+  </header>
+  <script type="module" src="./scripts/main_init.js"></script>
+</body>
+
+</html>
