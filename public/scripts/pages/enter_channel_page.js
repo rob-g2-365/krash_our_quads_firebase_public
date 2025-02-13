@@ -20,9 +20,13 @@ export class EnterChannelPage extends Page {
       <input type="radio" name="goggles-type" id="analog" value="analog">
       <label for="analog" class="js-goggles-type">Analog</label>
     </div>
+    <div class="radio-vista">
+      <input type="radio" name="goggles-type" id="vista" value="vista">
+      <label for="vista" class="js-goggles-type">DJI Vista/V1/V2</label>
+    </div>
     <div class="radio-dji">
       <input type="radio" name="goggles-type" id="dji" value="dji">
-      <label for="dji" class="js-goggles-type">DJI</label>
+      <label for="dji" class="js-goggles-type">DJI O3/O4</label>
     </div>
     <div class="radio-hdzero">
       <input type="radio" name="goggles-type" id="hdzero" value="hdzero">

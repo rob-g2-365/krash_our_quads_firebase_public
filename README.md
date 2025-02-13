@@ -144,6 +144,6 @@ In the Visual Studio Code terminal type the following.
  
 ## Additional Resources
 
-[Firebase - Ultimate Beginner's Guide Video](https://www.youtube.com/watch?v=9kRgVxULbag)
+[Firebase - Ultimate Beginner's Guide Video] (https://www.youtube.com/watch?v=9kRgVxULbag)
 [Pure CSS Hamburger Menu & Overlay Video] (https://www.youtube.com/watch?v=DZg6UfS5zYg)
 [Pure CSS Hamburger Menu & Overlay Code] (https://codepen.io/bradtraversy/pen/vMGBjQ)
