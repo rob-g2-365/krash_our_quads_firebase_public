@@ -73,8 +73,8 @@ function logInCallback() {
     menuHome.show();
   } else {
     channelTablePage.show();
+    lastShowablePage = channelTablePage;
   }
-  lastShowablePage.show(empty);
 }
 
 function handlerLogout(event) {

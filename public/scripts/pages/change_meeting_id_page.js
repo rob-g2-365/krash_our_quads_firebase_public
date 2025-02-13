@@ -30,8 +30,8 @@ export class ChangeMeetingIdPage extends Page {
       this.#listenerSaveMeetingIdButton);
     this.#listenerInfoCancel = this.registerListener('.js-btn-cancel',
       this.#listenerCancelMeetingIdButton);
-
   }
+  
   #listenerSaveMeetingIdButton() {
     this.#newMeetingId = document.getElementById(ID_MEETING).value;
     const hash = cyrb53(this.#newMeetingId);

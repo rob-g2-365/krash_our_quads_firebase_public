@@ -1,9 +1,10 @@
-export const VERSION = '0.1.0';
+export const VERSION = '0.1.1';
 
 export const ANALOG = 'analog';
 export const DJI = 'dji';
 export const HDZERO = 'hdzero';
 export const WALKSNAIL = 'walksnail';
+export const VISTA = 'vista';
 
 export const ANALOG_RECORD = {
   type: ANALOG,
@@ -21,10 +22,27 @@ export const ANALOG_RECORD = {
   ]
 };
 
+export const VISTA_RECORD = {
+  type: VISTA,
+  name: 'DJI Vista/V1/V2',
+  question: 'Choose the DJI Vista/V1/V2 channel?',
+  notes: 'Please use 25Mbs data throughput. ' + 
+    'Channel 3 is removed because of the potential for bleeding into other analog channels. '+
+    'Channel 8 is the public/configuration channel, so it is not used. ',
+  freqMap: [
+    { label: 'vista-ch1', channel: 1, achannel: 1, name: 'Channel 1 (a-ch1)', freq: 5660 },
+    { label: 'vista-ch2', channel: 2, achannel: 2, name: 'Channel 2 (a-ch2)', freq: 5695 },
+    { label: 'vista-ch4', channel: 4, achannel: 4, name: 'Channel 4 (a-ch4)', freq: 5770 },
+    { label: 'vista-ch5', channel: 5, achannel: 5, name: 'Channel 5 (a-ch5)', freq: 5805 },
+    { label: 'vista-ch6', channel: 6, achannel: 7, name: 'Channel 6 (a-ch7)', freq: 5878 },
+    { label: 'vista-ch7', channel: 7, achannel: 8, name: 'Channel 7 (a-ch8)', freq: 5914 }
+  ]
+}
+
 export const DJI_RECORD = {
   type: DJI,
-  name: 'DJI O3',
-  question: 'Choose the DJI channel?',
+  name: 'DJI O3/O4',
+  question: 'Choose the DJI O3/O4 channel?',
   notes: 'Please use 25Mbs data throughput. ' +
     'Channel 1 and Channel 2 are removed because they bleed into other analog channels.' +
     'Channel 5 is the public/configuration channel for DJI and Walksnail so it is removed also.',
@@ -71,8 +89,8 @@ const WALKSNAIL_RECORD = {
   ]
 };
 
-export const GOGGLE_TYPES = [ANALOG, DJI, HDZERO, WALKSNAIL];
-export const GOGGLES_RECORDS = [ANALOG_RECORD, DJI_RECORD, HDZERO_RECORD, WALKSNAIL_RECORD];
+export const GOGGLE_TYPES = [ANALOG, VISTA, DJI, HDZERO, WALKSNAIL];
+export const GOGGLES_RECORDS = [ANALOG_RECORD, VISTA_RECORD, DJI_RECORD, HDZERO_RECORD, WALKSNAIL_RECORD];
 
 export function goggleToGoggleRecord(gogglesType) {
   return GOGGLES_RECORDS.find((g) => g.type === gogglesType)
