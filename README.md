@@ -52,7 +52,7 @@ The unique id doesn't matter to much.
 ? Please specify a unique project id (warning: cannot be modified afterward) [6-30 characters]:
 ```
 
-(Keep in mind that this contains the name of the web link when deployed.
+Keep in mind that this contains the name of the web link when deployed.
 ```console
 ? What would you like to call your project? 
 ```
