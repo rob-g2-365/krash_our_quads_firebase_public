@@ -10,4 +10,3 @@ firebaseInit(()=>{
 showHomeInformation();
 intializeEventListeners();
 updateMenuState();
-

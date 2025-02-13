@@ -11,6 +11,8 @@ export class MeetingIdLoginPage extends Page {
   #callback = null;
   #loginListenerInfo = null;
   #cancelListenerInfo = null;
+  #nameInputListenerInfo = null;
+  #meetingIdInputListenerInfo = null;
 
   show(callback) {
     this.#callback = callback;
@@ -18,13 +20,18 @@ export class MeetingIdLoginPage extends Page {
     mainspaceElement.innerHTML = `
       <h1>Login Screen</h1>
       <p>Enter your name and the meeting id.</p>
-      <div>
-        <label for="${ID_NAME}">Name:</label>
-        <input type="text" id="${ID_NAME}" name="${ID_NAME}" minlength=3 maxlength=10></input><br>
-        <label for="${ID_MEETING}">Meeting ID:</label>
-        <input type="text" id="${ID_MEETING}" name="${ID_MEETING}" minlength=6 maxlength=6></input>
-      </div>
-      <br>
+      <br/>
+      <table>
+        <tr>
+          <td> <label class="input-label" for="${ID_NAME}">Name:</label> </td>
+          <td> <input type="text" id="${ID_NAME}" name="${ID_NAME}" minlength=3 maxlength=10></input> </td>
+        </tr>
+        <tr>
+          <td> <label class="input-label" for="${ID_MEETING}">Meeting ID:</label> </td>
+          <td> <input type="text" id="${ID_MEETING}" name="${ID_MEETING}" minlength=6 maxlength=6></input> </td>
+        </tr>
+      </table>
+      <br/>
       <p>Note: First name and last initial is enough.</p>
       <nav>
         <a class="btn js-btn-login">Login</a>
@@ -34,6 +41,9 @@ export class MeetingIdLoginPage extends Page {
     this.setDefaultsFromLocalStore();
     this.#loginListenerInfo = this.registerListener('.js-btn-login', this.listenerLoginButton);
     this.#cancelListenerInfo = this.registerListener('.js-btn-cancel',this.listenerCancelButton);
+
+    this.#nameInputListenerInfo = this.registerInputById(ID_NAME, this.validateInput);
+    this.#meetingIdInputListenerInfo = this.registerInputById(ID_MEETING, this.validateInput);
   }
 
   setDefaultsFromLocalStore() {
@@ -48,17 +58,20 @@ export class MeetingIdLoginPage extends Page {
   }
 
   listenerLoginButton(event) {
-    const uncleanName = document.getElementById(ID_NAME).value;
-    const name = removeNonPrintableChars(uncleanName);
+    const name = document.getElementById(ID_NAME).value;
     const meetingId = document.getElementById(ID_MEETING).value;
+
+    // Return if name or meeting id is not valid.
+    if ( !this.validateName(name) || !isAscii(meetingId)) {
+      return;
+    }
+
     if (verifyAdmin(name, meetingId)) {
-      this.unRegisterListener(this.#loginListenerInfo);
-      this.unRegisterListener(this.#cancelListenerInfo);
+      this.unRegisterAllListeners();
       setAdminMode(true);
       this.showAdminLoggedIn();
     } else if (verifyMeetingId(meetingId)) {
-      this.unRegisterListener(this.#loginListenerInfo);
-      this.unRegisterListener(this.#cancelListenerInfo);
+      this.unRegisterAllListeners();
 
       // SaveName;
       const userInfo = new UserInfo();
@@ -69,9 +82,15 @@ export class MeetingIdLoginPage extends Page {
     }
   }
   listenerCancelButton(event) {
+    this.unRegisterAllListeners();
+    this.#callback();
+  }
+
+  unRegisterAllListeners(){
     this.unRegisterListener(this.#loginListenerInfo);
     this.unRegisterListener(this.#cancelListenerInfo);
-    this.#callback();
+    this.unRegisterInputById(this.#nameInputListenerInfo);
+    this.unRegisterInputById(this.#meetingIdInputListenerInfo);
   }
 
   saveLocalStoreLoginInfo() {
@@ -87,8 +106,25 @@ export class MeetingIdLoginPage extends Page {
     const name = getGlobalUserInfo().getName();
     this.showOk(`<h2>User ${name} is logged in.</h2>`, this.#callback);
   }
+
+  validateInput(event){
+    const target = event.target;
+    const name = target.value;
+  
+    if(isAscii(name)) {
+      target.style.borderColor = 'black';
+      target.style.borderBlockWidth = '0px';
+    } else {
+      target.style.borderColor = 'red';
+      target.style.borderBlockWidth = '2px';
+    }
+  }
+
+  validateName(name) {
+    return isAscii(name) && name.length>=2;
+  } 
 }
 
-function removeNonPrintableChars(str) {
-  return str.replace(/[^\x20-\x7E]/g, '').trim();
+function isAscii(str) {
+  return /^[\x20-\x7E]*$/.test(str);
 }

@@ -63,17 +63,16 @@ function handlerLogin(event) {
   clearMenu();
   disableMenu();
   loginPage.show(logInCallback);
-
 }
 
 function logInCallback() {
   enableMenu();
   updateMenuState();
-  if(isAdminMode()) {
-    menuHome.show();
-  } else {
+  if(loggedIn()) {
     channelTablePage.show();
     lastShowablePage = channelTablePage;
+  } else {
+    lastShowablePage.show();
   }
 }
 
@@ -153,26 +152,34 @@ function clearMenu() {
 }
 
 export function updateMenuState() {
-  setMenuEnable(menuLogin, !loggedIn() && !isAdminMode());
-  setMenuEnable(menuLogout, loggedIn() || isAdminMode());
-  setMenuEnable(menuEnterChannel, globalUserLoggedInAndNotConfigured());
-  setMenuEnable(menuChangeChannel, globalUserLoggedInAndConfigured());
-  setMenuEnable(menuRemoveChannel, globalUserLoggedInAndConfigured());
-  setMenuEnable(menuShowChannels, loggedIn());
-  setMenuEnable(menuChangeMeetingId, isAdminMode());
-  setMenuEnable(menuClean, isAdminMode());
+  setMenuItemEnable(menuLogin, !loggedIn() && !isAdminMode());
+  setMenuItemEnable(menuLogout, loggedIn() || isAdminMode());
+  setMenuItemEnable(menuEnterChannel, globalUserLoggedInAndNotConfigured());
+  setMenuItemEnable(menuChangeChannel, globalUserLoggedInAndConfigured());
+  setMenuItemEnable(menuRemoveChannel, globalUserLoggedInAndConfigured());
+  setMenuItemEnable(menuShowChannels, loggedIn());
+  setMenuItemEnable(menuChangeMeetingId, isAdminMode());
+  setMenuItemEnable(menuClean, isAdminMode());
 }
 
-function setMenuEnable(className, enable) {
+function setMenuItemEnable(className, enable) {
   document.querySelector('.' + className).style.display = enable?'block':'none';
 }
 
 function enableMenu() {
-  document.querySelector('.js-toggler').style.display = 'block';
+  const elementHamburger = document.querySelector('.hamburger');
+  elementHamburger.classList.remove('hamburger-disable');
+
+  const elementToggler = document.querySelector('.toggler');
+  elementToggler.classList.remove('toggler-disable');
 }
 
 function disableMenu() {
-  document.querySelector('.js-toggler').style.display = 'none';
+  const elementHamburger = document.querySelector('.hamburger');
+  elementHamburger.classList.add('hamburger-disable');
+
+  const elementToggler = document.querySelector('.toggler');
+  elementToggler.classList.add('toggler-disable');
 }
 
 export function intializeEventListeners(){

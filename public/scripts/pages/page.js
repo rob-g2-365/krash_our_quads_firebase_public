@@ -42,6 +42,18 @@ export class Page {
     }
   }
 
+  registerInputById(id, memberListener){
+    const element = document.getElementById(id);
+    const bind = memberListener.bind(this);
+    element.addEventListener('input', bind);
+    return { element, bind };
+  }
+
+  unRegisterInputById(listenerInfo) {
+    if (listenerInfo) {
+      listenerInfo.element.removeEventListener('input', listenerInfo.bind);
+    }
+  }
 
   #listenerOkButton(event) {
     this.unRegisterListener(this.#listenerInfoOk);

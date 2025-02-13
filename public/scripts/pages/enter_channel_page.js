@@ -16,26 +16,7 @@ export class EnterChannelPage extends Page {
     const html = `
     <h3>What type of goggles/video transmitter do you have?</h1>
     <div class="left-radio-div">
-    <div class="radio-analog ">
-      <input type="radio" name="goggles-type" id="analog" value="analog">
-      <label for="analog" class="js-goggles-type">Analog</label>
-    </div>
-    <div class="radio-vista">
-      <input type="radio" name="goggles-type" id="vista" value="vista">
-      <label for="vista" class="js-goggles-type">DJI Vista/V1/V2</label>
-    </div>
-    <div class="radio-dji">
-      <input type="radio" name="goggles-type" id="dji" value="dji">
-      <label for="dji" class="js-goggles-type">DJI O3/O4</label>
-    </div>
-    <div class="radio-hdzero">
-      <input type="radio" name="goggles-type" id="hdzero" value="hdzero">
-      <label for="hdzero" class="js-goggles-type">HDZero</label>
-    </div>
-    <div class="radio-walksnail">
-      <input type="radio" name="goggles-type" id="walksnail" value="walksnail">
-      <label for="walksnail" class="js-goggles-type">Walksnail</label>
-    </div>
+      ${this.gogglesRadioButtonGroup()}
     </div>
     `;
     this.showOkCancel(html, this.buttonGogglesOkEventListener.bind(this),
@@ -43,6 +24,20 @@ export class EnterChannelPage extends Page {
 
     this.setDefaultGogglesType();
   }
+
+  gogglesRadioButtonGroup() {
+    return constant.GOGGLES_RECORDS.map(this.goggleRadioButton.bind(this)).join('');
+  }
+
+  goggleRadioButton(goggle) {
+    const html = `
+    <div>
+      <input type="radio" name="goggles-type" id="${goggle.type}" value="${goggle.type}">
+      <label for="${goggle.type}" class="js-goggles-type">${goggle.name}</label>
+    </div>`;
+    return html;
+  }
+
 
   setDefaultGogglesType() {
     const userInfo = getGlobalUserInfo();

@@ -68,7 +68,7 @@ export class UserInfo {
     const channelFriendlName = init ? this.getFriendlyChannelName() : "Not Configured";
     const aChannel = init ? this.getAChannel() : "Not Configured";
     return `
-    <table>
+    <table class="channel-table">
       <tr>
         <td>Name</td>
         <td>${this.getName()}</td>

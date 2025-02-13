@@ -91,19 +91,19 @@ body {
   cursor: pointer;
 }
 
-table {
+.channel-table {
   border: 2px solid black;
   border-collapse: collapse;
   padding: 5px;
 }
 
-th  {
+.channel-table th  {
   border: 2px solid black;
   border-collapse: collapse;
   padding: 5px;
   background-color:darkgray;
 }
-td {
+.channel-table td {
   border: 2px solid black;
   border-collapse: collapse;
   padding: 5px;
@@ -117,6 +117,12 @@ td {
   align-items: left;
   justify-content: left;
   text-align: left;
+}
+
+.input-label {
+    display: inline-block;
+    width: 100%;
+    text-align: right;
 }
 /*
 div.settings {

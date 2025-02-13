@@ -1,6 +1,6 @@
 import { Page } from './page.js';
 import { readFireStoreAllChannels } from '../firebase_database.js';
-import { ConvertRecordsToArrayOfUsers } from '../user_info.js'
+import { ConvertRecordsToArrayOfUsers, getGlobalUserInfo } from '../user_info.js'
 
 export class ShowChannelTablePage extends Page {
   show(callback) {
@@ -13,14 +13,13 @@ export class ShowChannelTablePage extends Page {
     const mainspaceElement = document.querySelector(".js-container");
     mainspaceElement.innerHTML = `
       <h2>Channel Allocation Table</h2>
-      <table>
+      <table class="channel-table">
         <tr>
           <th><b>Analog Channel</b></th>
           <th><b>User</b></th>
           <th><b>Platform</b></th>
         </tr>
         ${createRows(arrayUserInfo)}
-      </table>
     `;
   }
 }
@@ -70,19 +69,35 @@ function createUserRow(arrayUserInfo, aChannel) {
 }
 
 function createFirstAchannelRow(firstUserInfo, length) {
+  const name = firstUserInfo.getName();
+  const friendlyChannelName = firstUserInfo.getFriendlyChannelName();
+  const currentUser = isCurrentUser(firstUserInfo);
+
   const html = `
     <tr>
       <td rowspan="${length}">${firstUserInfo.getAChannel()}</td>
-      <td>${firstUserInfo.getName()}</td>
-      <td>${firstUserInfo.getFriendlyChannelName()}</td>
+      <td>${boldText(name, currentUser)}</td>
+      <td>${boldText(friendlyChannelName, currentUser)}</td>
     </tr>`;
   return html;
 }
 
+
 function createAchannelRow(userInfo) {
+  const name = userInfo.getName();
+  const friendlyChannelName = userInfo.getFriendlyChannelName();
+  const currentUser = isCurrentUser(userInfo);
   return `
     <tr>
-      <td>${userInfo.getName()}</td>
-      <td>${userInfo.getFriendlyChannelName()}</td>
+      <td>${boldText(name, currentUser)}</td>
+      <td>${boldText(friendlyChannelName, currentUser)}</td>
     </tr>`;
+}
+
+function isCurrentUser(userInfo) {
+  return (userInfo.getName() === getGlobalUserInfo().getName());
+}
+
+function boldText(text, bold) {
+  return (bold ? `<b>${text}</b>` : text);
 }
