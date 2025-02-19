@@ -7,6 +7,7 @@
 * Firebase/Firestore
 * Visual Studio Code
 * Node.js
+* npm
 	
 ## How to deploy the application
 
@@ -18,6 +19,7 @@ Install the following tools:
 
 * [Install Visual Studio Code](https://code.visualstudio.com/download)
 * [Install Node.js](https://nodejs.org/en/download)
+* [Install npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) 
  
 ### Visual Studio Setup
 
@@ -32,7 +34,7 @@ Initialize the firebase tools globally.
 In the Visual Studio Code terminal type the following.
 
 ```console
-> firebase init hosting.
+> firebase init hosting
 ```
 
 Select Create a new project.
