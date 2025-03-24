@@ -8,6 +8,11 @@
 * Visual Studio Code
 * Node.js
 * npm
+* vitest (Only for unit testing)
+* jsdom (Only for unit testing)
+* global-jsdom (Only for unit testing)
+* vitest-localstorage-mock (Only for unit testing)
+* eslint 
 	
 ## How to deploy the application
 
@@ -127,7 +132,7 @@ to
 ```
 
 
-### Testing the Firebase Application.
+### Running the Firebase Application locally.
 
 In the Visual Studio Code terminal type the following.
 
@@ -143,7 +148,32 @@ In the Visual Studio Code terminal type the following.
 > firebase deploy
 ```
 
- 
+## Unit Testing
+
+### Configure for testing.
+
+### Installing the tests
+
+  To install the packages.
+  ```console
+  > npm install
+  ```
+### Running Tests
+  To run the tests.
+  ```console
+  > npm run test
+  ```
+### Test Coverage
+  To run the tests with coverage.
+  ```console
+  > npm run coverage
+  ```
+### Running eslint
+  To run lint to check for potential code problems.
+  ```console
+  > npm run lint
+  ```
+
 ## Additional Resources
 
 * [Firebase - Ultimate Beginner's Guide Video](https://www.youtube.com/watch?v=9kRgVxULbag)

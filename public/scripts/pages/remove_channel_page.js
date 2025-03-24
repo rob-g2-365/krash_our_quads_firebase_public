@@ -1,5 +1,5 @@
 import { Page } from './page.js';
-import { getGlobalHtmlStatus } from '../user_info.js';
+import { getGlobalHtmlStatus, getGlobalUserInfo } from '../user_info.js';
 import { deleteFireStoreUserData } from '../firebase_database.js';
 
 export class RemoveChannelPage extends Page {
@@ -29,7 +29,7 @@ export class RemoveChannelPage extends Page {
 
   buttonRemoveChannelListener() {
     this.removeEventListeners();
-    deleteFireStoreUserData(this.showRemovedFromDatabase.bind(this));
+    deleteFireStoreUserData(this.showRemovedFromDatabase.bind(this), getGlobalUserInfo());
   }
 
   buttonCancelChannelListener() {
@@ -46,6 +46,8 @@ export class RemoveChannelPage extends Page {
   }
 
   showRemovedFromDatabase() {
+    getGlobalUserInfo().clearChannelInformation();
+
     const html = '<h2>Channel information removed from database.</h2>';
     this.showOk(html, this.#callback);
   }

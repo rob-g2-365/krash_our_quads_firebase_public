@@ -8,7 +8,7 @@ export class MeetingIdLogoutPage extends Page {
     if (isAdminMode()) {
       html = '<h2>Administrator logged out.</h2>';
     } else {
-      html = `<h2>User \"${getGlobalUserInfo().getName()}\" logged out.</h2>`;
+      html = `<h2>User "${getGlobalUserInfo().getName()}" logged out.</h2>`;
     }
     this.showOk(html, callback);
     setGlobalUserInfo(null);

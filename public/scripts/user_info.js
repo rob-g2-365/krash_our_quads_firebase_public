@@ -1,5 +1,4 @@
 import * as constants from './constants.js';
-
 let arrayUserInfo = null;
 
 export class UserInfo {
@@ -19,6 +18,11 @@ export class UserInfo {
     return this;
   }
 
+  setChannel(channel) {
+    this.#channel = channel;
+    return this;
+  }
+
   setGoggleType(goggleType) {
     this.#goggleType = goggleType;
     return this;
@@ -33,6 +37,7 @@ export class UserInfo {
     this.#channelLabel = freqRecord.label;
     this.#channel = freqRecord.channel;
     this.#aChannel = freqRecord.achannel;
+    return this;
   }
 
   getName() {
@@ -56,7 +61,7 @@ export class UserInfo {
   }
 
   getFriendlyChannelName() {
-    return this.#goggleType + ' - CH' + this.#channel;
+    return this.#goggleType + '-CH' + this.#channel;
   }
 
   isInitialized() {
@@ -65,7 +70,7 @@ export class UserInfo {
 
   getHtmlStatus() {
     const init = this.isInitialized();
-    const channelFriendlName = init ? this.getFriendlyChannelName() : "Not Configured";
+    const channelFriendlyName = init ? this.getFriendlyChannelName() : "Not Configured";
     const aChannel = init ? this.getAChannel() : "Not Configured";
     return `
     <table class="channel-table">
@@ -75,10 +80,10 @@ export class UserInfo {
       </tr>
       <tr>
         <td>Channel Info</td>
-        <td>${channelFriendlName}</td>
+        <td>${channelFriendlyName}</td>
       </tr>
       <tr>
-        <td>Analog Channel Equivalent</td>
+        <td>Race CH Equivalent</td>
         <td>${aChannel}</td>
       </tr>
     </table>
@@ -145,7 +150,7 @@ export function createUserTestData() {
   const FIRST_NAMES = ['Ben', 'Ethen', 'Joel', 'Zane', 'Grant', 'Jayden', 'Arthur', 'Max', 'Mary'];
   let testData = [];
   for (let i = 0; i < FIRST_NAMES.length; i++) {
-    const user = new createRandomUserInfo(FIRST_NAMES[i]);
+    const user = createRandomUserInfo(FIRST_NAMES[i]);
     testData.push(user);
   }
   return testData;
@@ -155,18 +160,9 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * max);
 }
 
-export function ConvertRecordsToArrayOfUsers(users) {
-  return users.map(record => {
-    const userInfo = new UserInfo();
-    userInfo.setName(record.name);
-    userInfo.setDataBaseRecord(record);
-    return userInfo;
-  });
-}
-
 function createRandomUserInfo(name) {
-  const goggleLength = constants.GOGGLES_RECORDS.length;
-  const goggleRecord = constants.GOGGLES_RECORDS[getRandomInt(goggleLength)];
+  const goggleLength = constants.GOGGLE_RECORDS.length;
+  const goggleRecord = constants.GOGGLE_RECORDS[getRandomInt(goggleLength)];
   const numFreqRecords = goggleRecord.freqMap.length;
   const freqRecord = goggleRecord.freqMap[getRandomInt(numFreqRecords)];
   const info = new UserInfo();
@@ -176,8 +172,8 @@ function createRandomUserInfo(name) {
   return info;
 }
 
-export function setArrayOfUsers(users) {
-  arrayUserInfo = users.map(record => {
+export function convertRecordsToArrayOfUsers(users) {
+  return users.map(record => {
     const userInfo = new UserInfo();
     userInfo.setName(record.name);
     userInfo.setDataBaseRecord(record);
@@ -185,6 +181,27 @@ export function setArrayOfUsers(users) {
   });
 }
 
+export function setArrayOfUsers(users) {
+  arrayUserInfo = convertRecordsToArrayOfUsers(users);
+}
+
 export function getArrayOfUsers() {
   return arrayUserInfo;
+}
+
+export function updateCurrentUserFromArrayOfUsers() {
+  if(!gUserInfo) {
+    return;
+  }
+
+  const foundUser = arrayUserInfo.find((userInfo) =>{
+    return userInfo.getName() === gUserInfo.getName();
+  });
+
+  // Copy the contents of the record.
+  if(foundUser) {
+    gUserInfo.setDataBaseRecord(foundUser.getDataBaseRecord());
+  } else {
+    gUserInfo.clearChannelInformation();
+  }
 }

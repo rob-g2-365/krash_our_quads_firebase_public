@@ -3,6 +3,7 @@ import { verifyMeetingId, verifyAdmin, setAdminMode } from '../meeting_id_auth.j
 import { getLocalStoreName, setLocalStoreName, getLocalStoreMeetingId, setLocalStoreMeetingId } from '../local_storage.js';
 import { UserInfo, getGlobalUserInfo, setGlobalUserInfo } from '../user_info.js';
 import { readFireStoreUserData } from '../firebase_database.js';
+import {validateUserName, isAscii} from '../helper.js';
 
 const ID_NAME = 'id-name';
 const ID_MEETING = 'meeting-id';
@@ -62,15 +63,16 @@ export class MeetingIdLoginPage extends Page {
     const meetingId = document.getElementById(ID_MEETING).value;
 
     // Return if name or meeting id is not valid.
-    if ( !this.validateName(name) || !isAscii(meetingId)) {
+    if ( !validateUserName(name) || !isAscii(meetingId)) {
       return;
     }
 
     if (verifyAdmin(name, meetingId)) {
       this.unRegisterAllListeners();
       setAdminMode(true);
+      this.saveLocalStoreLoginInfo();
       this.showAdminLoggedIn();
-    } else if (verifyMeetingId(meetingId)) {
+    } else if (verifyMeetingId(name, meetingId)) {
       this.unRegisterAllListeners();
 
       // SaveName;
@@ -102,8 +104,11 @@ export class MeetingIdLoginPage extends Page {
     this.showOk('<h2>Administrator is logged in.</h2>', this.#callback);
   }
 
-  showLoggedIn() {
+  showLoggedIn(json) {
     const name = getGlobalUserInfo().getName();
+    if(json) {
+      getGlobalUserInfo().setDataBaseRecord(json);
+    }
     this.showOk(`<h2>User ${name} is logged in.</h2>`, this.#callback);
   }
 
@@ -119,12 +124,5 @@ export class MeetingIdLoginPage extends Page {
       target.style.borderBlockWidth = '2px';
     }
   }
-
-  validateName(name) {
-    return isAscii(name) && name.length>=2;
-  } 
 }
 
-function isAscii(str) {
-  return /^[\x20-\x7E]*$/.test(str);
-}

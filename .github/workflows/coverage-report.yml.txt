@@ -1,0 +1,31 @@
+name: 'Deploy Coverage Report'
+
+on:
+  workflow_run:
+    workflows: ['Run Tests'] # runs after 'Run Tests' workflow
+    types:
+      - completed
+
+permissions:
+  contents: read
+  actions: read
+  checks: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: 'Download Coverage Report'
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+          path: ./coverage
+
+      - name: 'Deploy to GitHub Pages'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./coverage

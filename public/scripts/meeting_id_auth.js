@@ -1,5 +1,5 @@
-const MEETING_ID_ADMIN_HASH=6157855772623008;
-const NAME_ADMIN = 'admin';
+import {MEETING_ID_ADMIN_HASH} from './meeting_id_auth_constants.js'
+const MEETING_ID_ADMIN_NAME = 'admin';
 
 let adminMode = false;
 let meetingIdHash = null;
@@ -12,12 +12,12 @@ export function setMeetingIdHash(record) {
   meetingIdHash = record.hash;
 }
 
-export function verifyMeetingId(id) {
-  return meetingIdHash === cyrb53(id);
+export function verifyMeetingId(name, id) {
+  return !(MEETING_ID_ADMIN_NAME === name) && meetingIdHash === cyrb53(id);
 }
 
 export function verifyAdmin(name, id){
-  return MEETING_ID_ADMIN_HASH === cyrb53(id) && NAME_ADMIN === name;
+  return MEETING_ID_ADMIN_HASH === cyrb53(id) && MEETING_ID_ADMIN_NAME === name;
 }
 
 export function cyrb53(str, seed = 0) {

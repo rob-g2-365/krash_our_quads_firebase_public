@@ -1,15 +1,18 @@
-import { getGlobalUserInfo, setArrayOfUsers } from './user_info.js';
+import { setArrayOfUsers } from './user_info.js';
 
 const COLLECTION_TAG_USER = 'USER_INFO';
 const COLLECTION_TAG_MEETING = 'MEETING';
 const DOCTAG_HASH = 'meeting_id_hash';
 
-export function writeFireStoreUserData(callback) {
-  const uid = getGlobalUserInfo().getName();
-  const db = firebase.firestore();
+// eslint-disable-next-line no-undef
+const fb = firebase;
+
+export function writeFireStoreUserData(callback, userInfo) {
+  const uid = userInfo.getName();
+  const db = fb.firestore();
   const colRef = db.collection(COLLECTION_TAG_USER);
   const docRef = colRef.doc(uid);
-  const userInfoRecord = getGlobalUserInfo().getDataBaseRecord();
+  const userInfoRecord = userInfo.getDataBaseRecord();
   docRef.set(userInfoRecord).then(() => {
     if (callback) {
       callback();
@@ -19,30 +22,30 @@ export function writeFireStoreUserData(callback) {
   });
 }
 
-export function readFireStoreUserData(callback) {
-  const uid = getGlobalUserInfo().getName();
-  const db = firebase.firestore();
+export function readFireStoreUserData(callback, username) {
+  const db = fb.firestore();
   const colRef = db.collection(COLLECTION_TAG_USER);
-  const docRef = colRef.doc(uid);
+  const docRef = colRef.doc(username);
   docRef.get().then((doc) => {
+    let json = null;
     if (doc.exists) {
-      getGlobalUserInfo().setDataBaseRecord(doc.data());
+      json = doc.data();
     }
     if (callback) {
-      callback();
+      callback(json);
     }
   }).catch((error) => {
     console.error("Error reading user document: ", error);
   });
+
 }
 
-export function deleteFireStoreUserData(callback) {
-  const uid = getGlobalUserInfo().getName();
-  const db = firebase.firestore();
+export function deleteFireStoreUserData(callback, userInfo) {
+  const uid = userInfo.getName();
+  const db = fb.firestore();
   const colRef = db.collection(COLLECTION_TAG_USER);
   const docRef = colRef.doc(uid);
   docRef.delete().then(() => {
-    getGlobalUserInfo().clearChannelInformation();
     if (callback) {
       callback();
     }
@@ -52,7 +55,7 @@ export function deleteFireStoreUserData(callback) {
 }
 
 export async function cleanAllFireStoreUserData() {
-  const db = firebase.firestore();
+  const db = fb.firestore();
   const colRef = db.collection(COLLECTION_TAG_USER);
   const deleteBatch = db.batch();
   // Required for efficient pagination or so says google AI
@@ -74,7 +77,7 @@ export async function cleanAllFireStoreUserData() {
 }
 
 export function readFireStoreAllChannels(callback) {
-  const db = firebase.firestore();
+  const db = fb.firestore();
   const colRef = db.collection(COLLECTION_TAG_USER);
   colRef.get().then((snapshot) => {
     const dataArray = snapshot.docs.map((doc) => {
@@ -90,7 +93,7 @@ export function readFireStoreAllChannels(callback) {
 }
 
 export function readFireStoreMeetingHash(callback) {
-  const db = firebase.firestore();
+  const db = fb.firestore();
   const colRef = db.collection(COLLECTION_TAG_MEETING);
   const docRef = colRef.doc(DOCTAG_HASH);
   docRef.get().then((doc) => {
@@ -103,7 +106,7 @@ export function readFireStoreMeetingHash(callback) {
 }
 
 export function writeFireStoreMeetingHash(callback, hash) {
-  const db = firebase.firestore();
+  const db = fb.firestore();
   const colRef = db.collection(COLLECTION_TAG_MEETING);
   const docRef = colRef.doc(DOCTAG_HASH);
   docRef.set({ hash }).then(() => {

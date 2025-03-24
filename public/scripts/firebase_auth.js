@@ -1,6 +1,10 @@
-export function googleLogin(update) {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  firebase.auth().signInWithPopup(provider).then(result => {
+// eslint-disable-next-line no-undef
+const fb = firebase;
+
+export function googleLogin(update) {  
+  const provider = new fb.auth.GoogleAuthProvider();
+  // eslint-disable-next-line  no-unused-vars
+  fb.auth().signInWithPopup(provider).then(result => {
     update();
   }).catch((error)=>{
     console.error('Google sign-in error',error);
@@ -8,7 +12,7 @@ export function googleLogin(update) {
 }
 
 export function logout(update) {
-  firebase.auth().signOut().then(() => {
+  fb.auth().signOut().then(() => {
     // Sign-out successful.
     update();
   }).catch((error) => {
@@ -18,7 +22,7 @@ export function logout(update) {
 }
 
 export function getFirebaseDisplayName() {
-  const auth = firebase.auth();
+  const auth = fb.auth();
   const user = auth.currentUser;
   if (user) {
     const displayName = user.displayName; 
@@ -28,7 +32,7 @@ export function getFirebaseDisplayName() {
 }
 
 export function getFirebaseUid() {
-  const auth = firebase.auth();
+  const auth = fb.auth();
   const user = auth.currentUser;
   if (user) {
     const uid = user.uid; 

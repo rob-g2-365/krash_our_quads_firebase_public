@@ -1,0 +1,59 @@
+name: 'Run Tests'
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    strategy:
+      matrix:
+        node-version: [22.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: 'Execute Unit tests'
+        run: | 
+          npm ci
+          npx vitest --environment jsdom --reporter=junit --outputFile=reports/junit.xml
+
+      - name: 'Upload test results'
+        uses: actions/upload-artifact@v4  # upload test result
+        if: success() || failure()        # run this step even if previous step failed
+        with:
+          name: test-results
+          path: reports/junit.xml 
+
+      - name: 'Generage Coverage'
+        run: npm run coverage
+
+      - name: 'Report Coverage'
+        # Set if: always() to also generate the report if tests are failing
+        # Only works if you set `reportOnFailure: true` in your vite config as specified above
+        if: always() 
+        uses:  davelosert/vitest-coverage-report-action@v2
+        with:
+          name: coverage-report
+          file-coverage-mode: all
+          json-summary-compare-path: coverage/coverage-summary.json  
+
+      - name: 'Upload Coverage Report'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/          
+      - name: 'Run eslint'
+        run: npx eslint public/scripts/** 
+  

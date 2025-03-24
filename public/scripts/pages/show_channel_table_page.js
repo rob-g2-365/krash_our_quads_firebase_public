@@ -1,26 +1,29 @@
 import { Page } from './page.js';
 import { readFireStoreAllChannels } from '../firebase_database.js';
-import { ConvertRecordsToArrayOfUsers, getGlobalUserInfo } from '../user_info.js'
+import { convertRecordsToArrayOfUsers, getGlobalUserInfo , updateCurrentUserFromArrayOfUsers} from '../user_info.js'
 
 export class ShowChannelTablePage extends Page {
+  #callback = null;
   show(callback) {
-    this.showTable = this.showTable.bind(this);
-    readFireStoreAllChannels(this.showTable);
+    this.#callback = callback;
+    readFireStoreAllChannels(this.showTable.bind(this));
   }
 
   showTable(databaseRecords) {
-    const arrayUserInfo = ConvertRecordsToArrayOfUsers(databaseRecords);
+    updateCurrentUserFromArrayOfUsers();
+    const arrayUserInfo = convertRecordsToArrayOfUsers(databaseRecords);
     const mainspaceElement = document.querySelector(".js-container");
     mainspaceElement.innerHTML = `
       <h2>Channel Allocation Table</h2>
       <table class="channel-table">
         <tr>
-          <th><b>Analog Channel</b></th>
+          <th><b>Race CH</b></th>
           <th><b>User</b></th>
           <th><b>Platform</b></th>
         </tr>
         ${createRows(arrayUserInfo)}
     `;
+    this.#callback();
   }
 }
 

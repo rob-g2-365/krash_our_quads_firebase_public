@@ -19,6 +19,7 @@ export function firebaseInit(callback) {
     // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
 
     try {
+      // eslint-disable-next-line no-undef
       app = firebase.app();
       let features = [
         'auth',
