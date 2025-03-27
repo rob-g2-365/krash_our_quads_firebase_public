@@ -24,7 +24,7 @@ const USER2_RECORD = {name: USER2_NAME, aChannel: 4, channel:4, googleType: cons
 
 export const GOGGLE_TYPE = constant.DJI_O3;
 
-describe('enter channel page helper test', () =>{
+describe('Enter channel page helper test suite', () =>{
   beforeEach(() => {
     document.body.innerHTML = `
     <!DOCTYPE html>

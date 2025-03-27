@@ -39,7 +39,7 @@ export class FireBaseDataBase {
     });
   }
 
-  deleteFireStoreUserData(callback, userInfo) {
+  deleteUserData(callback, userInfo) {
     const uid = userInfo.getName();
     const db = fb.firestore();
     const colRef = db.collection(COLLECTION_TAG_USER);

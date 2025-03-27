@@ -11,8 +11,8 @@ export class Database {
   }
   
    // eslint-disable-next-line no-unused-vars
-  deleteFireStoreUserData(callback, userInfo) {
-    console.error('deleteFireStoreUserData not implemented');
+  deleteUserData(callback, userInfo) {
+    console.error('deleteUserData not implemented');
   }
 
   async cleanAllUserData() {

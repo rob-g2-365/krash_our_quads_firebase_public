@@ -5,7 +5,7 @@ import { getFreqRadioButtonSelection } from '../../../../public/scripts/pages/en
 import * as constant from '../../../../public/scripts/constants.js';
 import {USER_MAIN_CHANNEL_LABEL, getTestUserInfo} from '../enter_channel_page_helper.test.js';
 
-describe('Test Change User Admin Subpage test', () =>{
+describe('Change user admin subpage test suite', () =>{
   beforeEach(() => {
     document.body.innerHTML = `
     <!DOCTYPE html>

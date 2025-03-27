@@ -1,5 +1,5 @@
 // Do not format this file.
-export const VERSION = '0.2.1';
+export const VERSION = '0.2.2';
 
 export const ANALOG = 'analog-race';
 export const DJI_O3 = 'dji-ham-o3-25mbs';

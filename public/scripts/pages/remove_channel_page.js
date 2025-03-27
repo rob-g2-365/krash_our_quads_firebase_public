@@ -29,7 +29,7 @@ export class RemoveChannelPage extends Page {
 
   buttonRemoveChannelListener() {
     this.removeEventListeners();
-    getDatabase.deleteUserData(this.showRemovedFromDatabase.bind(this), getGlobalUserInfo());
+    getDatabase().deleteUserData(this.showRemovedFromDatabase.bind(this), getGlobalUserInfo());
   }
 
   buttonCancelChannelListener() {

@@ -1,6 +1,6 @@
 import { Database } from "../../public/scripts/database.js";
 
-export class DatabaseMock extends Database{
+export class DatabaseMock extends Database {
   #databaseUserInfo = [];
   #hash;
 
@@ -29,7 +29,7 @@ export class DatabaseMock extends Database{
     }
   }
   
-  deleteFireStoreUserData(callback, userInfo) {
+  deleteUserData(callback, userInfo) {
     const index = this.#databaseUserInfo.findIndex((record)=> {
       return record.getName() === userInfo.getName();
     });

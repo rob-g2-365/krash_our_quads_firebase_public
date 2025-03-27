@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, test, vi} from 'vitest';
 import { defaultUser1, defaultUser2, TEST_U1_NAME } from '../../user_info.test.js';
 import {ShowChannelTableAdminPage} from '../../../../public/scripts/pages/show_channel_table_admin/show_channel_table_admin_page.js';
 
-describe('Test Show Channel Table Admin Subpage test', () =>{
+describe('Show channel table admin subpage test suite.', () =>{
   beforeEach(() => {
     document.body.innerHTML = `
     <!DOCTYPE html>

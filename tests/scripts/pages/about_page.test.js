@@ -2,7 +2,7 @@ import 'global-jsdom/register';
 import { beforeEach, describe, expect, test } from 'vitest';
 import {AboutPage} from '../../../public/scripts/pages/about_page.js';
 
-describe('About page test', () =>{
+describe('About page test suite.', () =>{
   beforeEach(() => {
     document.body.innerHTML = '<!DOCTYPE html><body><div class="js-container"></div></body>';
   });

@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { BasePage, CLASS_BUTTON_OK, CLASS_BUTTON_CANCEL  } from '../../../public/scripts/pages/base_page.js';
 
 const ID_TEST='id-test';
-describe('About page test', () => {
+describe('Base page test suite.', () => {
   beforeEach(() => {
     document.body.innerHTML = `<!DOCTYPE html>
     <body>
