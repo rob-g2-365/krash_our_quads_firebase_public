@@ -1,6 +1,5 @@
-import 'global-jsdom/register';
-import { beforeEach, expect, test, describe } from 'vitest';
-import { isAscii, validateUserName, enableMenu, disableMenu } from '../../public/scripts/helper';
+import { expect, test, describe } from 'vitest';
+import { isAscii, validateUserName} from '../../public/scripts/helper.js';
 
 const TEST_VALUES = [
   {s: 'Joe Momma', i:true, v:true},
@@ -11,24 +10,6 @@ const TEST_VALUES = [
 ];
 
 describe('Helper Test Suite', () =>{
-  beforeEach(() => {
-    document.body.innerHTML = `
-    <!DOCTYPE html>
-    <body>
-      <div class="hamburger"></div>
-      <div class="toggler"></div> 
-    </body>`;
-  });
-
-  test('Test enable/disable Hamburger Menu', ()=>{
-    disableMenu();
-    expect(document.querySelector('.hamburger-disable')).toBeTruthy();
-    expect(document.querySelector('.toggler-disable')).toBeTruthy();
-    enableMenu();
-    expect(document.querySelector('.hamburger-disable')).toBeFalsy();
-    expect(document.querySelector('.toggler-disable')).toBeFalsy();
-  });
-
   test('Test isAscii',() =>{
     TEST_VALUES.forEach((value)=>{
       expect(isAscii(value.s)).toBe(value.i);

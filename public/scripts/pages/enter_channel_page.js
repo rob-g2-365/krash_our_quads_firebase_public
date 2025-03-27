@@ -2,13 +2,13 @@ import { Page } from './page.js';
 import { getGlobalUserInfo, getGlobalHtmlStatus} from '../user_info.js';
 import * as constant from '../constants.js';
 import { setLocalStoreGoggleType, setLocalStoreChannelLabel } from '../local_storage.js';
-import { writeFireStoreUserData } from '../firebase_database.js';
 import {
   CLASS_FREQ_QUESTION, CLASS_FREQ_RADIO_BUTTONS_DIV, CLASS_FREQ_QUESTION_NOTES,displayFreqQuestion, displayFreqQuestionNotes, displayFreqRadioButtons, 
   getCheckedGogglesRadioButton, gogglesRadioButtonGroup,
   getFreqRadioButtonSelection, setDefaultFreqSelection, setDefaultGogglesType, 
   validateGoggleRadioButtonChecked, 
 } from './enter_channel_page_helper.js';
+import { getDatabase } from '../database.js';
 
 export class EnterChannelPage extends Page {
   #callback = null;
@@ -85,7 +85,7 @@ export class EnterChannelPage extends Page {
 
     getGlobalUserInfo().setGoggleType(goggleType);
     getGlobalUserInfo().setUsingFreqRecord(freqRecord);
-    writeFireStoreUserData(this.showSavedFreqState.bind(this), getGlobalUserInfo());
+    getDatabase().writeUserData(this.showSavedFreqState.bind(this), getGlobalUserInfo());
   }
 
   removeFreqEventListeners() {

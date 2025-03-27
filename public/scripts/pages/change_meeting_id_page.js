@@ -1,5 +1,5 @@
 import { Page } from './page.js';
-import { writeFireStoreMeetingHash } from '../firebase_database.js';
+import { getDatabase } from '../database.js';
 import { setMeetingId, cyrb53 } from '../meeting_id_auth.js';
 
 const ID_MEETING = 'change-meeting-id';
@@ -37,7 +37,7 @@ export class ChangeMeetingIdPage extends Page {
     const hash = cyrb53(this.#newMeetingId);
     setMeetingId(this.#newMeetingId);
     this.#unRegisterAllListeners();
-    writeFireStoreMeetingHash(this.showMeetingChanged.bind(this), hash);
+    getDatabase().writeMeetingHash(this.showMeetingChanged.bind(this), hash);
   }
 
   #listenerCancelMeetingIdButton() {

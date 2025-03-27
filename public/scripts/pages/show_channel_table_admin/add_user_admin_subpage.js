@@ -1,8 +1,8 @@
 import * as constant from '../../constants.js'
 import { BasePage, CLASS_BUTTON_OK, CLASS_BUTTON_CANCEL } from '../base_page.js';
 import { UserInfo } from '../../user_info.js';
-import { writeFireStoreUserData } from '../../firebase_database.js';
 import { validateUserName } from '../../helper.js';
+import { getDatabase } from '../../database.js';
 
 const ID_NAME = 'id-name';
 
@@ -88,7 +88,7 @@ export class AddUserAdminSubPage extends BasePage {
     this.unRegisterListener(this.#okListenerInfo);
     this.unRegisterListener(this.#cancelListenerInfo);
 
-    writeFireStoreUserData(this.#callback.bind(this), userInfo);
+    getDatabase().writeUserData(this.#callback.bind(this), userInfo);
   }
 
   cancelPressed() {

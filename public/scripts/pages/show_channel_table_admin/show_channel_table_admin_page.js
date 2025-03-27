@@ -1,9 +1,9 @@
 import { Page } from '../page.js';
-import { readFireStoreAllChannels, readFireStoreUserData, deleteFireStoreUserData } from '../../firebase_database.js';
-import {UserInfo, convertRecordsToArrayOfUsers} from '../../user_info.js';
-import { enableMenu, disableMenu } from '../../helper.js';
+import {UserInfo, convertRecordsToArrayOfUsers, setArrayOfUsers} from '../../user_info.js';
+import { enableMenu, disableMenu } from '../../menu_control.js';
 import {AddUserAdminSubPage} from './add_user_admin_subpage.js';
 import {ChangeUserAdminSubPage} from './change_user_admin_subpage.js';
+import { getDatabase } from '../../database.js';
 
 export class ShowChannelTableAdminPage extends Page {
   arrayUserInfo = null;
@@ -11,11 +11,13 @@ export class ShowChannelTableAdminPage extends Page {
   show(callback) {
     this.arrayUserInfo = null;
     this.releasedUserInfo = null;
-    readFireStoreAllChannels(this.showTable.bind(this));
+    getDatabase().readAllChannels(this.showTable.bind(this));
   }
 
   showTable(databaseRecords) {
     enableMenu();
+    setArrayOfUsers(databaseRecords);    
+    
     const arrayUserInfo = convertRecordsToArrayOfUsers(databaseRecords);
     // Add the index to an array element
     this.arrayUserInfo = arrayUserInfo.map((userInfo, index)=> {
@@ -60,24 +62,43 @@ export class ShowChannelTableAdminPage extends Page {
     const index = target.dataset.releaseId;
     this.userInfo = this.arrayUserInfo[index].userInfo;
     const name = this.userInfo.getName();
+    disableMenu();
 
     // Verify that the user information is correct.
     // There is no notification.  The user could have modified the channel after the screen has 
     // been shown
-    readFireStoreUserData(this.verifyUserData.bind(this), name);
+    getDatabase().readUserData(this.verifyUserDataRelease.bind(this), name);
   }
 
   changeButtonEventListener(event) {
     const target = event.target;
     const index = target.dataset.changeId;
     this.userInfo = this.arrayUserInfo[index].userInfo;
+    const name = this.userInfo.getName();
     disableMenu();
+
+    // Verify that the user information is correct.
+    // There is no notification.  The user could have modified the channel after the screen has 
+    // been shown
+    getDatabase().readUserData(this.verifyUserDataChange.bind(this), name);
+  }
+
+  verifyUserDataRelease(userRecord) {
+    this.verifyUserData(userRecord, this.showRemoveVerifiedScreen.bind(this));
+  }
+
+  verifyUserDataChange(userRecord) {
+    this.verifyUserData(userRecord, this.invokeChangeUserAdminSubPage.bind(this));
+  }
+
+  invokeChangeUserAdminSubPage() {
     const changeUserSubPage = new ChangeUserAdminSubPage();
     changeUserSubPage.show(this.show.bind(this), this.userInfo);
   }
+
  
-  verifyUserData(json){
-    if(!json) {
+  verifyUserData(userRecord, verifiedCall){
+    if(!userRecord) {
       // User deleted entry.
       // Show error screen and Refresh page.
       this.userAlreadyRemoved();
@@ -85,16 +106,16 @@ export class ShowChannelTableAdminPage extends Page {
     }
 
     const  info = new UserInfo();
-    info.setName(this.userInfo).setDataBaseRecord(json);
+    info.setName(this.userInfo).setDataBaseRecord(userRecord);
 
     if(this.userInfo.getChannelLabel() !== info.getChannelLabel()) {
       // User Updated channel.
       // Show error screen and refresh the page.
-      this.userAlreadyRemoved();
+      this.userChannelHasChanged();
       return;
     }
 
-    this.showRemoveVerifiedScreen();
+    verifiedCall();
   }
 
   userAlreadyRemoved() {
@@ -102,7 +123,7 @@ export class ShowChannelTableAdminPage extends Page {
     const page = new Page();
     const html = `
     <h2>Stale Data Warning</h2>
-    <p>User ${name} channel has been already removed from the database.<p>
+    <p>User ${name} channel has been removed from the database.<p>
     <p>Refreshing table</p> 
     `;
     disableMenu();
@@ -134,7 +155,7 @@ export class ShowChannelTableAdminPage extends Page {
 
   releaseUser() {
     enableMenu();
-    deleteFireStoreUserData(this.show.bind(this), this.userInfo);
+    getDatabase().deleteUserData(this.show.bind(this), this.userInfo);
   }
 
   addButtonEventListener(event) {
@@ -144,7 +165,6 @@ export class ShowChannelTableAdminPage extends Page {
     const addUserSubPage = new AddUserAdminSubPage();
     addUserSubPage.show(this.show.bind(this), aChannel);
   }
-
 }
 
 function createRows(arrayUsersInfo) {

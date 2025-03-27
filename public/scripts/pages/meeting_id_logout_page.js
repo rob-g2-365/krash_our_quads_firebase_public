@@ -12,6 +12,6 @@ export class MeetingIdLogoutPage extends Page {
     }
     this.showOk(html, callback);
     setGlobalUserInfo(null);
-    setAdminMode(false);;
+    setAdminMode(false);
   }
 }

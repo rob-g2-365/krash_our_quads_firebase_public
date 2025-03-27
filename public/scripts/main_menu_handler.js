@@ -1,6 +1,6 @@
 import { loggedIn, globalUserLoggedInAndConfigured, globalUserLoggedInAndNotConfigured } from './user_info.js';
 import { isAdminMode } from './meeting_id_auth.js';
-import { enableMenu, disableMenu } from './helper.js';
+import { enableMenu, disableMenu, clearMenu, setMenuItemEnable } from './menu_control.js';
 import { HomePage } from './pages/home_page.js';
 import { MeetingIdLoginPage } from './pages/meeting_id_login_page.js';
 import { MeetingIdLogoutPage } from './pages/meeting_id_logout_page.js';
@@ -165,12 +165,9 @@ function handlerAbout() {
   lastShowablePage = aboutPage;
 }
 
-function clearMenu() {
-  document.querySelector('.js-toggler').checked = false;
-}
-
 export function updateMenuState() {
   setMenuItemEnable(menuLogin, !loggedIn() && !isAdminMode());
+  setMenuItemEnable(menuHome, true);
   setMenuItemEnable(menuLogout, loggedIn() || isAdminMode());
   setMenuItemEnable(menuEnterChannel, globalUserLoggedInAndNotConfigured());
   setMenuItemEnable(menuChangeChannel, globalUserLoggedInAndConfigured());
@@ -179,10 +176,7 @@ export function updateMenuState() {
   setMenuItemEnable(menuShowChannelsAdmin, isAdminMode());
   setMenuItemEnable(menuChangeMeetingId, isAdminMode());
   setMenuItemEnable(menuClean, isAdminMode());
-}
-
-function setMenuItemEnable(className, enable) {
-  document.querySelector('.' + className).style.display = enable ? 'block' : 'none';
+  setMenuItemEnable(menuAbout, true);
 }
 
 export function intializeEventListeners() {

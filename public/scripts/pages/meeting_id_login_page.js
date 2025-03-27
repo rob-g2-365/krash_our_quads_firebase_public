@@ -2,8 +2,8 @@ import { Page } from './page.js';
 import { verifyMeetingId, verifyAdmin, setAdminMode } from '../meeting_id_auth.js';
 import { getLocalStoreName, setLocalStoreName, getLocalStoreMeetingId, setLocalStoreMeetingId } from '../local_storage.js';
 import { UserInfo, getGlobalUserInfo, setGlobalUserInfo } from '../user_info.js';
-import { readFireStoreUserData } from '../firebase_database.js';
 import {validateUserName, isAscii} from '../helper.js';
+import { getDatabase } from '../database.js';
 
 const ID_NAME = 'id-name';
 const ID_MEETING = 'meeting-id';
@@ -80,7 +80,7 @@ export class MeetingIdLoginPage extends Page {
       userInfo.setName(name);
       setGlobalUserInfo(userInfo);
       this.saveLocalStoreLoginInfo();
-      readFireStoreUserData(this.showLoggedIn.bind(this));
+      getDatabase().readUserData(this.showLoggedIn.bind(this));
     }
   }
   listenerCancelButton(event) {

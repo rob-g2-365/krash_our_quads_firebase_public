@@ -1,5 +1,5 @@
 import { Page } from './page.js';
-import { cleanAllFireStoreUserData } from '../firebase_database.js';
+import { getDatabase } from '../database.js';
 
 export class CleanAllPage extends Page {
   #callback = null;
@@ -12,7 +12,7 @@ export class CleanAllPage extends Page {
     this.showOkCancel(
       html,
       () => {
-        cleanAllFireStoreUserData();
+        getDatabase().cleanAllUserData();
         this.okCallback();
       },
       callback

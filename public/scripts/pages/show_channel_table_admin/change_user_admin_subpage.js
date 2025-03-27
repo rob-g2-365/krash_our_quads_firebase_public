@@ -1,7 +1,6 @@
 
 import { BasePage } from '../base_page.js';
 import {UserInfo} from '../../user_info.js';
-import { writeFireStoreUserData } from '../../firebase_database.js';
 import { 
   CLASS_FREQ_QUESTION, CLASS_FREQ_RADIO_BUTTONS_DIV,
   displayFreqQuestion, displayFreqRadioButtons, 
@@ -10,6 +9,7 @@ import {
   validateGoggleRadioButtonChecked,   
 } from '../enter_channel_page_helper.js'
 import * as constant from '../../constants.js';
+import { getDatabase } from '../../database.js';
 
 export class ChangeUserAdminSubPage extends BasePage {
   #callback;
@@ -83,7 +83,7 @@ export class ChangeUserAdminSubPage extends BasePage {
       newUserInfo.setName(this.#userInfo.getName());
       newUserInfo.setGoggleType(goggleType);
       newUserInfo.setUsingFreqRecord(freqRecord);
-      writeFireStoreUserData(this.#callback, newUserInfo);
+      getDatabase().writeUserData(this.#callback, newUserInfo);
     }
   
     removeFreqEventListeners() {

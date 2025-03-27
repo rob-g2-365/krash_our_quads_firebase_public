@@ -1,15 +1,16 @@
 import { Page } from './page.js';
-import { readFireStoreAllChannels } from '../firebase_database.js';
-import { convertRecordsToArrayOfUsers, getGlobalUserInfo , updateCurrentUserFromArrayOfUsers} from '../user_info.js'
+import { convertRecordsToArrayOfUsers, getGlobalUserInfo , setArrayOfUsers, updateCurrentUserFromArrayOfUsers} from '../user_info.js'
+import { getDatabase } from '../database.js';
 
 export class ShowChannelTablePage extends Page {
   #callback = null;
   show(callback) {
     this.#callback = callback;
-    readFireStoreAllChannels(this.showTable.bind(this));
+    getDatabase().readAllChannels(this.showTable.bind(this));
   }
 
   showTable(databaseRecords) {
+    setArrayOfUsers(databaseRecords);    
     updateCurrentUserFromArrayOfUsers();
     const arrayUserInfo = convertRecordsToArrayOfUsers(databaseRecords);
     const mainspaceElement = document.querySelector(".js-container");
